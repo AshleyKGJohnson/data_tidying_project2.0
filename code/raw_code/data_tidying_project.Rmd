@@ -5,7 +5,8 @@ date: "6/13/2018"
 output: html_document
 ---
 
-
+### Install Packages
+In my first data tidying project, I started by installing and loading all necessary packges needed to run the requested functions. 
 ```{r setup, include=FALSE}
 ## install packages if necessary
 list.of.packages <- c("httr", "readxl", "dplyr", "tidyr", "stringr", "reshape2", "skimr", "ggplot2")
@@ -53,7 +54,7 @@ saveRDS(df2, file = "df_retail.rds")
 ```
 
 ### Wrangle Data
-
+After saving the raw data files, I took some time to run the data frame #2's code, line by line, to get a better understanding as to what each line of code accomplishes.
 ```{r wrangle-df2, warning=FALSE} 
 ## an example working with df2
 ## let's wrangle!
@@ -74,6 +75,7 @@ df_retail <- df2 %>%
   filter(business == "Retail sales, total "| business=="Department stores ")
 ```
 
+I then proceeded to manually run data frame #1's code: separting a column that violated tidy data standards, adding a value column, grouping the data by year, summarizing it and then reordering it to align with data frame #2. 
 ```{r wrangle-df1, warning=FALSE} 
 ## now, your turn!
 ## work with df1
@@ -97,11 +99,15 @@ df_department <- df1 %>%
   select(business, year, n)
 ```
 
+I combined both data frames by row and converted the "n" column into a numeric variable so it could be plotted later.
 ```{r merge-data, warning=FALSE} 
 ## Now, combine the two data frames
-df_total <- function_name()
+df_total <- rbind(df_retail, df_department)
+## Convert "n" to a numeric variable
+df_total <- df_total %>% mutate(n=as.numeric(n))
 ```
 
+Below are visual representations of the data. 
 ```{r plot, warning=FALSE, fig.width=10} 
 ## Plot Retail Sales data
 ggplot(df_retail, aes(x=year,y=n,colour=business)) +
